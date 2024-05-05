@@ -1,6 +1,6 @@
 # Freedomswaps
 
-This repository simplifies the provisioning of interfaces for decentralized exchanges.  
+This repository provides smart contracts like [Freedomswaps](https://polygonscan.com/address/0x7CB713d744264c274cbF9Dbc6196b58B7ce33e73) to simplify the provisioning of interfaces for decentralized exchanges.  
 
 Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes).  
 
