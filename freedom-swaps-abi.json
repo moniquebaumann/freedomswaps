@@ -225,6 +225,11 @@
 				"type": "address"
 			},
 			{
+				"internalType": "address payable",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
 				"internalType": "uint24",
 				"name": "poolFee",
 				"type": "uint24"
@@ -256,6 +261,11 @@
 			{
 				"internalType": "address",
 				"name": "tokenOut",
+				"type": "address"
+			},
+			{
+				"internalType": "address payable",
+				"name": "recipient",
 				"type": "address"
 			},
 			{
