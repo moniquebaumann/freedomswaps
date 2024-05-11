@@ -12,8 +12,8 @@
 
 pragma solidity 0.8.19;
 interface IFreedomSwaps {
-    function swapExactInputSingle(address tokenIn, address tokenOut, uint256 amountIn, uint24 poolFee, uint24 slippage) external returns (uint256 amountOut);
-    function swapBaseCurrency(address tokenIn, address tokenOut, uint24 poolFee, uint24 slippage) external payable  returns (uint256 amountOut);
+    function swapExactInputSingle(address tokenIn, address tokenOut, address payable recipient, uint256 amountIn, uint24 poolFee, uint24 slippage) external returns (uint256 amountOut);
+    function swapBaseCurrency(address tokenIn, address tokenOut, address payable recipient, uint24 poolFee, uint24 slippage) external payable returns (uint256 amountOut);
     function getAmountOutMin(uint256 amountIn, uint256 price, uint256 slippage) external pure returns(uint256);
     function getPrice(address token0, address token1, uint24 poolFee) external view returns(uint256);
     function getSqrtPriceX96FromPool(address token0, address token1, uint24 fee) external view returns(uint256);
