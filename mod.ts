@@ -1,1 +1,1 @@
-export * from "freedom-swaps-deno-api.ts"
+export * from "./freedom-swaps-deno-api.ts"
