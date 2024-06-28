@@ -26,26 +26,26 @@ contract FreedomSwaps {
         swapRouter = ISwapRouter(SWAP_ROUTER);
     }
 
-    function swapExactInputSingle(address tokenIn, address tokenOut, address payable recipient, uint256 amountIn, uint24 poolFee, uint24 slippage) external returns (uint256 amountOut) {
+    function swapExactInputSingle(address tokenIn, address tokenOut, uint256 amountIn, uint24 poolFee, uint24 slippage) external returns (uint256 amountOut) {
         safeTransferWithApprove(tokenIn, amountIn, address(swapRouter));
         amountOut = swapRouter.exactInputSingle(ISwapRouter.ExactInputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: recipient,
+                recipient: msg.sender,
                 deadline: block.timestamp,
                 amountIn: amountIn,
                 amountOutMinimum: getAmountOutMin(amountIn, getPrice(tokenIn, tokenOut, poolFee), slippage),
                 sqrtPriceLimitX96: 0
             }));
     }
-    function swapBaseCurrency(address tokenIn, address tokenOut, address payable recipient, uint24 poolFee, uint24 slippage) public payable returns (uint256 amountOut) {
+    function swapBaseCurrency(address tokenIn, address tokenOut, uint24 poolFee, uint24 slippage) public payable returns (uint256 amountOut) {
         ISwapRouter.ExactInputSingleParams memory params = 
             ISwapRouter.ExactInputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: recipient,
+                recipient: msg.sender,
                 deadline: block.timestamp,
                 amountIn: msg.value,
                 amountOutMinimum: getAmountOutMin(msg.value, getPrice(tokenIn, tokenOut, poolFee), slippage),

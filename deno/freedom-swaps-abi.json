@@ -259,11 +259,6 @@
 				"type": "address"
 			},
 			{
-				"internalType": "address payable",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
 				"internalType": "uint256",
 				"name": "amountIn",
 				"type": "uint256"

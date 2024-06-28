@@ -5,6 +5,29 @@ This repository provides smart contracts like [Freedomswaps](https://polygonscan
 Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes).  
 
 
+## Deno API
+### Usage Example 
+```ts 
+import { FreedomSwaps } from "./freedom-swaps-deno-api.ts"
+
+const tokenIn = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
+const tokenOut = "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Polygon POS
+const amountIn = 1
+const poolFee = 10000
+const slippage = 30
+
+const freedomSwaps = await FreedomSwaps.getInstance()
+await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage)
+```
+
+### Execute Usage Example
+```sh
+git clone https://github.com/moniquebaumann/freedomswaps.git
+cd freedomswaps/deno
+cp .env.template.json .env.json # --> enter your data 
+deno run --allow-all usage-example.ts 
+```
+
 ## About us
 We are [Friends of Satoshi](https://github.com/moniquebaumann/friends-of-satoshi).  
 
