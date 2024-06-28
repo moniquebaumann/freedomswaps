@@ -22,14 +22,11 @@ export async function getLogger() {
 export function getProvider(logger: Logger, providerURL: string) {
     return new ethers.JsonRpcProvider(providerURL)
 }
-export function getABI(url: string) {
-    return JSON.parse(Deno.readTextFileSync(url))
-}
-export async function getContract(contractAddress: string, provider: any, url: string, pkTestWallet: string): Promise<any> {
+export async function getContract(contractAddress: string, contractABI: any, provider: any, pkTestWallet?: string): Promise<any> {
     console.log(`getting contract ${contractAddress}`)
     // const signer = await provider.getSigner()
     const wallet = new ethers.Wallet(pkTestWallet, provider)
     const signer = await wallet.connect(provider)
     console.log(`signer address: ${await signer.getAddress()}`)
-    return new ethers.Contract(contractAddress, getABI(url), signer)
+    return new ethers.Contract(contractAddress, contractABI, signer)
 }

@@ -1,3 +1,5 @@
+import { freedomSwapsABI } from "./freedom-swaps-abi.ts"
+import { freiheitsABI } from "./freiheit-abi.ts"
 import { getLogger, getProvider, FreedomSwapsCA, getContract, Matic } from "./helper.ts"
 
 export class FreedomSwaps {
@@ -23,12 +25,12 @@ export class FreedomSwaps {
 
     public async swap(tokenIn: string, tokenOut: string, amountIn: number, poolFee: number, slippage: number, pkTestWallet: string) {
         let tx
-        const freedomSwapsContract = await getContract(FreedomSwapsCA, this.provider, "./freedom-swaps-abi.json", pkTestWallet)
+        const freedomSwapsContract = await getContract(FreedomSwapsCA, freedomSwapsABI, this.provider, pkTestWallet)
         if (tokenIn === Matic) {
             this.logger.info(`swapping ${amountIn} of BaseCurrency ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
             tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: BigInt(amountIn * 10 ** 18) })
         } else {
-            const erc20Contract = await getContract(tokenIn, this.provider, "./freiheit-abi.json")
+            const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider)
             // feel free to check for the allowance first via pull request
             tx = await erc20Contract.approve(FreedomSwapsCA, BigInt(amountIn * 10 ** 18))
             this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
