@@ -24,8 +24,7 @@ await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage)
 ```sh
 git clone https://github.com/moniquebaumann/freedomswaps.git
 cd freedomswaps/deno
-cp .env.template.json .env.json # --> enter your data 
-deno run --allow-all usage-example.ts 
+deno run --allow-all usage-example.ts <your provider url> <your pk of an experimental testwallet>
 ```
 
 ## About us

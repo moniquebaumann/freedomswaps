@@ -5,6 +5,11 @@ const tokenOut = "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Pol
 const amountIn = 1
 const poolFee = 10000
 const slippage = 30
+const providerURL = Deno.args[0]
+const pkTestWallet = Deno.args[1]
 
-const freedomSwaps = await FreedomSwaps.getInstance()
-await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage)
+if (providerURL === undefined || pkTestWallet === undefined) {
+    throw new Error("parameter missing")
+}
+const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
+await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)

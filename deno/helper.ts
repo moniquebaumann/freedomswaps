@@ -19,28 +19,17 @@ export async function getLogger() {
     }
     return loggerInstance
 }
-export function getProvider(logger: Logger) {
-    return new ethers.JsonRpcProvider(getProviderURL(logger))
+export function getProvider(logger: Logger, providerURL: string) {
+    return new ethers.JsonRpcProvider(providerURL)
 }
 export function getABI(url: string) {
     return JSON.parse(Deno.readTextFileSync(url))
 }
-export async function getContract(contractAddress: string, provider: any, url: string): Promise<any> {
-    const configuration = JSON.parse(Deno.readTextFileSync('./.env.json'))
+export async function getContract(contractAddress: string, provider: any, url: string, pkTestWallet: string): Promise<any> {
     console.log(`getting contract ${contractAddress}`)
     // const signer = await provider.getSigner()
-    const wallet = new ethers.Wallet(configuration.pkTestWallet, provider)
+    const wallet = new ethers.Wallet(pkTestWallet, provider)
     const signer = await wallet.connect(provider)
     console.log(`signer address: ${await signer.getAddress()}`)
     return new ethers.Contract(contractAddress, getABI(url), signer)
-}
-export function getProviderURL(logger: Logger): string {
-    let configuration: any = {}
-    try {
-        configuration = JSON.parse(Deno.readTextFileSync('./.env.json'))
-        return configuration.providerURL
-    } catch (error) {
-        logger.error(error.message)
-        logger.error("without a providerURL I cannot connect to the blockchain")
-    }
 }

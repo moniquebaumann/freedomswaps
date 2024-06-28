@@ -4,10 +4,10 @@ export class FreedomSwaps {
 
     private static instance: FreedomSwaps
 
-    public static async getInstance(): Promise<FreedomSwaps> {
+    public static async getInstance(providerURL: string): Promise<FreedomSwaps> {
         if (FreedomSwaps.instance === undefined) {
             const logger = await getLogger()
-            const provider = getProvider(logger)
+            const provider = getProvider(logger, providerURL)
             FreedomSwaps.instance = new FreedomSwaps(logger, provider)
         }
         return FreedomSwaps.instance
@@ -21,9 +21,9 @@ export class FreedomSwaps {
         this.provider = provider
     }
 
-    public async swap(tokenIn: string, tokenOut: string, amountIn: number, poolFee: number, slippage: number) {
+    public async swap(tokenIn: string, tokenOut: string, amountIn: number, poolFee: number, slippage: number, pkTestWallet: string) {
         let tx
-        const freedomSwapsContract = await getContract(FreedomSwapsCA, this.provider, "./freedom-swaps-abi.json")
+        const freedomSwapsContract = await getContract(FreedomSwapsCA, this.provider, "./freedom-swaps-abi.json", pkTestWallet)
         if (tokenIn === Matic) {
             this.logger.info(`swapping ${amountIn} of BaseCurrency ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
             tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: BigInt(amountIn * 10 ** 18) })
