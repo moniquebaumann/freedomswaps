@@ -7,24 +7,34 @@ Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-
 
 ## Deno API
 ### Usage Example 
+
 ```ts 
-import { FreedomSwaps } from "./freedom-swaps-deno-api.ts"
+
+import { FreedomSwaps } from "https://deno.land/x/freedomswaps@v1.1.1/mod.ts"
 
 const tokenIn = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
 const tokenOut = "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Polygon POS
 const amountIn = 1
 const poolFee = 10000
 const slippage = 30
+const providerURL = Deno.args[0]
+const pkTestWallet = Deno.args[1]
 
-const freedomSwaps = await FreedomSwaps.getInstance()
-await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage)
+if (providerURL === undefined || pkTestWallet === undefined) {
+    throw new Error("parameter missing")
+}
+const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
+await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)
+
 ```
 
 ### Execute Usage Example
 ```sh
+
 git clone https://github.com/moniquebaumann/freedomswaps.git
-cd freedomswaps/deno
+cd freedomswaps
 deno run --allow-all usage-example.ts <your provider url> <your pk of an experimental testwallet>
+
 ```
 
 ## About us
