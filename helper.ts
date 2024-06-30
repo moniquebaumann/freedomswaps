@@ -30,3 +30,6 @@ export async function getContract(contractAddress: string, contractABI: any, pro
     console.log(`signer address: ${await signer.getAddress()}`)
     return new ethers.Contract(contractAddress, contractABI, signer)
 }
+export function getAddressFromPK(pkTestWallet, provider) {
+    return new ethers.Wallet(pkTestWallet, provider).address
+}

@@ -1,6 +1,7 @@
 import { freedomSwapsABI } from "./freedom-swaps-abi.ts"
 import { freiheitsABI } from "./freiheit-abi.ts"
-import { getLogger, getProvider, FreedomSwapsCA, getContract, Matic } from "./helper.ts"
+import { wMaticABI } from "./wmatic-abi.ts"
+import { getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./helper.ts"
 
 export class FreedomSwaps {
 
@@ -25,20 +26,34 @@ export class FreedomSwaps {
 
     public async swap(tokenIn: string, tokenOut: string, amountIn: number, poolFee: number, slippage: number, pkTestWallet: string) {
         let tx
+        const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider, pkTestWallet)
+        const decimals = Number(await erc20Contract.decimals())
         const freedomSwapsContract = await getContract(FreedomSwapsCA, freedomSwapsABI, this.provider, pkTestWallet)
         if (tokenIn === Matic) {
             this.logger.info(`swapping ${amountIn} of BaseCurrency ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: BigInt(amountIn * 10 ** 18) })
+            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: BigInt(amountIn * 10 ** decimals) })
         } else {
-            const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider)
-            // feel free to check for the allowance first via pull request
-            tx = await erc20Contract.approve(FreedomSwapsCA, BigInt(amountIn * 10 ** 18))
-            this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
-            await tx.wait()
+            const address = getAddressFromPK(pkTestWallet, this.provider)
+            const allowance = await erc20Contract.allowance(address, FreedomSwapsCA)
+            this.logger.info(`the allowance from ${address} for ${FreedomSwapsCA} is: ${allowance}`)
+            if (allowance < BigInt(amountIn * 10 ** decimals)) {
+                tx = await erc20Contract.approve(FreedomSwapsCA, BigInt(360 * amountIn * 10 ** decimals))
+                this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
+                await tx.wait()
+            }
             this.logger.info(`swapping ${amountIn} of ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, BigInt(amountIn * 10 ** 18), poolFee, slippage)
+            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, BigInt(amountIn * 10 ** decimals), poolFee, slippage)
         }
-        this.logger.info(`tx: https://polygonscan.com/tx/${tx.hash}`)
+        this.logger.info(`swap tx: https://polygonscan.com/tx/${tx.hash}`)
+        await tx.wait()
+    }
+    
+    public async unwrap(pkTestWallet) {
+        const address = getAddressFromPK(pkTestWallet, this.provider)
+        const wmaticContract = await getContract(Matic, wMaticABI, this.provider, pkTestWallet)
+        const wMaticBalance = await wmaticContract.balanceOf(address)
+        const tx = await wmaticContract.withdraw(wMaticBalance)
+        this.logger.info(`unwrap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()
     }
 }
