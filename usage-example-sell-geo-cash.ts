@@ -1,6 +1,6 @@
 
-import { FreedomSwaps } from "./freedom-swaps-deno-api.ts"
-// import { FreedomSwaps } from "https://deno.land/x/freedomswaps@v1.3.1/mod.ts"
+import { FreedomSwaps } from "./mod.ts"
+// import { FreedomSwaps } from "https://deno.land/x/freedomswaps@v1.4.0/mod.ts"
 
 // const tokenIn = "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Polygon POS
 // const tokenIn = "0x0715184614ca1e90eafdf7a4d7fe33b046b47c02" // Friede on Polygon POS

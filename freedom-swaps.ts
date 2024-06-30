@@ -1,7 +1,4 @@
-import { freedomSwapsABI } from "./freedom-swaps-abi.ts"
-import { freiheitsABI } from "./freiheit-abi.ts"
-import { wMaticABI } from "./wmatic-abi.ts"
-import { getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./helper.ts"
+import { freedomSwapsABI, freiheitsABI, wMaticABI, getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./mod.ts"
 
 export class FreedomSwaps {
 
@@ -48,7 +45,7 @@ export class FreedomSwaps {
         await tx.wait()
     }
     
-    public async unwrap(pkTestWallet) {
+    public async unwrap(pkTestWallet: string) {
         const address = getAddressFromPK(pkTestWallet, this.provider)
         const wmaticContract = await getContract(Matic, wMaticABI, this.provider, pkTestWallet)
         const wMaticBalance = await wmaticContract.balanceOf(address)
