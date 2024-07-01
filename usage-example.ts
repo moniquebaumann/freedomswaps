@@ -8,4 +8,4 @@ const slippage = Deno.args[4] // e.g. 9
 const providerURL = Deno.args[5] // e.g. https://polygon-mainnet.g.alchemy.com/v2/...
 const pkTestWallet = Deno.args[6] // e.g. <experiment with small amounts / wallets>
 
-await FreedomSwaps.swapStatic(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)
+await FreedomSwaps.swapStatic()

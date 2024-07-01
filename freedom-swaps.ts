@@ -1,5 +1,5 @@
-import { freedomSwapsABI, freiheitsABI, wMaticABI, getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./mod.ts"
 import { ethers } from "./deps.ts"
+import { freedomSwapsABI, freiheitsABI, wMaticABI, getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./mod.ts"
 
 export class FreedomSwaps {
 
@@ -15,7 +15,6 @@ export class FreedomSwaps {
     }
 
     public static async swapStatic() {
-
         const tokenIn = Deno.args[0] // e.g. "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
         const tokenOut = Deno.args[1] // e.g. "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Polygon POS
         const amountIn = Deno.args[2] // e.g. 1
@@ -31,7 +30,6 @@ export class FreedomSwaps {
 
         const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
         await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)
-
     }
 
     private logger

@@ -19,14 +19,14 @@ const slippage = Deno.args[4] // e.g. 9
 const providerURL = Deno.args[5] // e.g. https://polygon-mainnet.g.alchemy.com/v2/...
 const pkTestWallet = Deno.args[6] // e.g. <experiment with small amounts / wallets>
 
-await FreedomSwaps.swapStatic(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)
+await FreedomSwaps.swapStatic()
 
 ```
 
 ## Execute Usage Example
 ```sh
 
-deno run --allow-all https://deno.land/x/freedomswaps/usage-example.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1 10000 9 https://polygon-mainnet.g.alchemy.com/v2/oH4CDuu52ytnb0xQlYOIWBzKeinwXeu8 0x062b85170cef798771bd26eec252a5af231c2420d822ec590f41e1b325a3a22a
+deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
 
 ```
 
