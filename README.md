@@ -4,17 +4,6 @@
 
 Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes).  
 
-
-## Usage Example Static Via Terminal
-
-```sh 
-
-# deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts <tokenIn> <tokenOut> <amountIn> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
-deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
-
-
-```
-
 ## Usage Example Via TypeScript
 
 ```ts 
@@ -37,6 +26,17 @@ const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
 await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWallet)
 
 ```
+
+
+## Usage Example Static Via Terminal
+
+```sh 
+
+# deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts <tokenIn> <tokenOut> <amountIn> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
+deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
+
+```
+
 
 ## About us
 We are [Friends of Satoshi](https://github.com/moniquebaumann/friends-of-satoshi).  
