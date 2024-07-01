@@ -1,4 +1,5 @@
 import { freedomSwapsABI, freiheitsABI, wMaticABI, getLogger, getProvider, FreedomSwapsCA, getContract, Matic, getAddressFromPK } from "./mod.ts"
+import { ethers } from "./deps.ts"
 
 export class FreedomSwaps {
 
@@ -44,7 +45,7 @@ export class FreedomSwaps {
         this.logger.info(`swap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()
     }
-    
+
     public async unwrap(pkTestWallet: string) {
         const address = getAddressFromPK(pkTestWallet, this.provider)
         const wmaticContract = await getContract(Matic, wMaticABI, this.provider, pkTestWallet)
@@ -52,5 +53,11 @@ export class FreedomSwaps {
         const tx = await wmaticContract.withdraw(wMaticBalance)
         this.logger.info(`unwrap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()
+    }
+
+    public async getPrice(tokenContractAddress1: string, tokenContractAddress2: string, poolFee: number, pkTestWallet: string): Promise<number> {
+        const freedomSwapsContract = await getContract(FreedomSwapsCA, freedomSwapsABI, this.provider, pkTestWallet)
+        const priceFromSC = ethers.formatEther(await freedomSwapsContract.getPrice(tokenContractAddress1, tokenContractAddress2, poolFee))
+        return Number(priceFromSC)
     }
 }
