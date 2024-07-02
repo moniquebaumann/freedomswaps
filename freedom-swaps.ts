@@ -17,7 +17,7 @@ export class FreedomSwaps {
     public static async swapStatic() {
         const tokenIn = Deno.args[0] // e.g. "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
         const tokenOut = Deno.args[1] // e.g. "0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7" // Freiheit on Polygon POS
-        const amountIn = Deno.args[2] // e.g. 1
+        const amountIn = BigInt(Deno.args[2]) // e.g. 1000000000000000000 (assuming 18 decimals this would swap 1 Coin)
         const poolFee = Deno.args[3] // e.g. 10000
         const slippage = Deno.args[4] // e.g. 9
         const providerURL = Deno.args[5] // e.g. https://polygon-mainnet.g.alchemy.com/v2/...
@@ -40,25 +40,25 @@ export class FreedomSwaps {
         this.provider = provider
     }
 
-    public async swap(tokenIn: string, tokenOut: string, amountIn: number, poolFee: number, slippage: number, pkTestWallet: string) {
+    public async swap(tokenIn: string, tokenOut: string, amountIn: bigint, poolFee: number, slippage: number, pkTestWallet: string) {
         let tx
         const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider, pkTestWallet)
         const decimals = Number(await erc20Contract.decimals())
         const freedomSwapsContract = await getContract(FreedomSwapsCA, freedomSwapsABI, this.provider, pkTestWallet)
         if (tokenIn === Matic) {
             this.logger.info(`swapping ${amountIn} of BaseCurrency ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: BigInt(amountIn * 10 ** decimals) })
+            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: amountIn })
         } else {
             const address = getAddressFromPK(pkTestWallet, this.provider)
             const allowance = await erc20Contract.allowance(address, FreedomSwapsCA)
             this.logger.info(`the allowance from ${address} for ${FreedomSwapsCA} is: ${allowance}`)
-            if (allowance < BigInt(amountIn * 10 ** decimals)) {
-                tx = await erc20Contract.approve(FreedomSwapsCA, BigInt(360 * amountIn * 10 ** decimals))
+            if (allowance < amountIn) {
+                tx = await erc20Contract.approve(FreedomSwapsCA, BigInt(360) * amountIn)
                 this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
                 await tx.wait()
             }
             this.logger.info(`swapping ${amountIn} of ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, BigInt(amountIn * 10 ** decimals), poolFee, slippage)
+            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, amountIn, poolFee, slippage)
         }
         this.logger.info(`swap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()
