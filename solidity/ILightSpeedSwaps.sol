@@ -17,6 +17,7 @@ interface ILightSpeedSwaps {
     function swapExactOutputSingle(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage) external returns (uint256 amountIn);
     function swapBaseCurrencyExactOut(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage) external payable returns (uint256 amountIn);
     function getAmountOutMin(uint256 amountIn, uint256 price, uint256 slippage) external pure returns(uint256);
+    function getAmountInMaximum(uint256 amountOut, uint256 price, uint256 slippage) external pure returns(uint256);
     function getPrice(address token0, address token1, uint24 poolFee) external view returns(uint256);
     function getSqrtPriceX96FromPool(address token0, address token1, uint24 fee) external view returns(uint256);
     function getAmount0(uint256 liquidity, uint256 sqrtPriceX96) external  pure returns(uint256);
