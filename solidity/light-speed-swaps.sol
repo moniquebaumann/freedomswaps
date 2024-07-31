@@ -2,10 +2,10 @@
 
 // credits to: 
 // https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes 
+// https://Geo-Caching.org 
 // https://github.com/moniquebaumann 
 
 // We fund freedom.
-// We stop state criminals.
 // We make crypto cypherpunk again.
 // We love Geo Caching with Geo Cash.
 // We foster Freedom, Justice and Peace.
@@ -97,15 +97,15 @@ contract LightSpeedSwaps {
         } else {
             return regularOutput - Math.mulDiv(regularOutput, slippage, 100);
         }
-    }
+    }  
     function getAmountInMaximum(uint256 amountOut, uint256 price, uint256 slippage) public pure returns(uint256) { 
-        uint256 regularOutput = amountOut / price;
+        uint256 regularInput = Math.mulDiv(amountOut, price, 10 ** 18);
         if (slippage == 0) {
-            return regularOutput;
+            return regularInput;
         } else {
-            return regularOutput + Math.mulDiv(regularOutput, slippage, 100);
+            return regularInput + Math.mulDiv(regularInput, slippage, 100);
         }
-    }    
+    }      
     function getPrice(address token0, address token1, uint24 poolFee) public view returns(uint256) { 
         uint24 decimalsT0 = ERC20(token0).decimals();
         uint24 decimalsT1 = ERC20(token1).decimals();
@@ -113,7 +113,8 @@ contract LightSpeedSwaps {
         uint256 liquidity = getLiquidityFromPool(token0, token1, poolFee);
         uint256 amount0 = getAmount0(liquidity, sqrtPriceX96);
         uint256 amount1 = getAmount1(liquidity, sqrtPriceX96);
-        return getPriceFromAmounts(decimalsT0, decimalsT1, token0, amount0, amount1, token1);
+        address token0InPool = IUniswapV3Pool(IUniswapV3Factory(FACTORY).getPool(token0, token1, poolFee)).token0();
+        return getPriceFromAmounts(decimalsT0, decimalsT1, token0, amount0, amount1, token0InPool);
     }
     function getSqrtPriceX96FromPool(address token0, address token1, uint24 fee) public view returns(uint256) {
         IUniswapV3Pool pool = IUniswapV3Pool(IUniswapV3Factory(FACTORY).getPool(token0, token1, fee));
@@ -128,14 +129,13 @@ contract LightSpeedSwaps {
     }    
     function getPriceFromAmounts(uint256 t0Decimals, uint256 t1Decimals, address t0, uint256 amount0, uint256 amount1, address asset) public pure returns(uint256) {
         if (t0 == asset) {
-            return Math.mulDiv(amount1, 10**t0Decimals, amount0);
-        } else {
             return Math.mulDiv(amount0, 10**t1Decimals, amount1);
+        } else {
+            return Math.mulDiv(amount1, 10**t0Decimals, amount0);
         }
     }
     function getLiquidityFromPool(address token0, address token1, uint24 fee) public view returns(uint256) {
-        IUniswapV3Pool pool = IUniswapV3Pool(IUniswapV3Factory(FACTORY).getPool(token0, token1, fee));
-        return pool.liquidity();
+        return IUniswapV3Pool(IUniswapV3Factory(FACTORY).getPool(token0, token1, fee)).liquidity();
     }
     function safeTransferWithApprove(address tokenIn, uint256 amountIn, address router) internal {
         TransferHelper.safeTransferFrom(tokenIn, msg.sender, address(this), amountIn);
