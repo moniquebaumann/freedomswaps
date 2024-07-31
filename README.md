@@ -52,7 +52,7 @@ await freedomSwaps.swapExactOutput(tokenIn, tokenOut, amountOut, poolFee, slippa
 
 ```
 
-## Usage Example Static Via Terminal
+## Usage Examples Static Via Terminal
 
 ### Exact Input
 
@@ -64,9 +64,11 @@ deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/
 ```
 
 ### Exact Output
+
+```sh 
 # deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-output-static.ts <tokenIn> <tokenOut> <amountOut> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
 deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-output-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1000000000000000000 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
-
+```
 
 ## About us
 We are [Friends of Satoshi](https://github.com/moniquebaumann/friends-of-satoshi).  
