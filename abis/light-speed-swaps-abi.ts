@@ -1,4 +1,4 @@
-export const freedomSwapsABI = [
+export const lightSpeedSwapsABI = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -42,6 +42,35 @@ export const freedomSwapsABI = [
 			}
 		],
 		"name": "getAmount1",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountOut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "slippage",
+				"type": "uint256"
+			}
+		],
+		"name": "getAmountInMaximum",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -260,6 +289,45 @@ export const freedomSwapsABI = [
 			},
 			{
 				"internalType": "uint256",
+				"name": "amountOut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint24",
+				"name": "poolFee",
+				"type": "uint24"
+			},
+			{
+				"internalType": "uint24",
+				"name": "slippage",
+				"type": "uint24"
+			}
+		],
+		"name": "swapBaseCurrencyExactOut",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "tokenIn",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "tokenOut",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
 				"name": "amountIn",
 				"type": "uint256"
 			},
@@ -279,6 +347,45 @@ export const freedomSwapsABI = [
 			{
 				"internalType": "uint256",
 				"name": "amountOut",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "tokenIn",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "tokenOut",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint24",
+				"name": "poolFee",
+				"type": "uint24"
+			},
+			{
+				"internalType": "uint24",
+				"name": "slippage",
+				"type": "uint24"
+			}
+		],
+		"name": "swapExactOutputSingle",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
 				"type": "uint256"
 			}
 		],

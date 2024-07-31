@@ -1,0 +1,1 @@
+deno run --allow-net --allow-read --allow-write --allow-env --reload https://deno.land/x/freedomswaps/usage-example-exact-output-static.ts 0xb841A4f979F9510760ecf60512e038656E68f459 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 1000000000000000000 10000 9 $1 $2

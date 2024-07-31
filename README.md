@@ -1,10 +1,12 @@
 # Freedomswaps
 
-🦕 module to simplify uniswap interactions by leveraging smart contracts like [Freedomswaps](https://polygonscan.com/address/0xA70f5023801F06A6a4C04695E794cf6e2ecCb34F) fostering the adoption of decentralized exchanges.  
+🦕 module to simplify uniswap interactions by leveraging smart contracts like [LightSpeedSwaps](https://polygonscan.com/address/0xf97F48B7b985F2389Aa2540B53757Ee0A92886B7) fostering the adoption of decentralized exchanges.  
 
 Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes).  
 
-## Usage Example Via TypeScript
+## Usage Examples Via TypeScript
+
+### Exact Input
 
 ```ts 
 
@@ -27,15 +29,43 @@ await freedomSwaps.swap(tokenIn, tokenOut, amountIn, poolFee, slippage, pkTestWa
 
 ```
 
+### Exact Output
+
+```ts 
+import { FreedomSwaps } from "https://deno.land/x/freedomswaps/mod.ts"
+
+const tokenIn = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
+const tokenOut = "0xb841a4f979f9510760ecf60512e038656e68f459" // Geld on Polygon POS
+const amountOut = BigInt(1296000 * 10**18) // assuming 18 decimals 
+const poolFee = 10000
+const slippage = 9
+const providerURL = Deno.args[0]
+const pkTestWallet = Deno.args[1]
+
+if (providerURL === undefined || pkTestWallet === undefined) {
+    throw new Error("parameter missing")
+}
+
+const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
+
+await freedomSwaps.swapExactOutput(tokenIn, tokenOut, amountOut, poolFee, slippage, pkTestWallet)
+
+```
 
 ## Usage Example Static Via Terminal
 
+### Exact Input
+
 ```sh 
 
-# deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts <tokenIn> <tokenOut> <amountIn> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
-deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
+# deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-input-static.ts <tokenIn> <tokenOut> <amountIn> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
+deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-input-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1000000000000000000 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
 
 ```
+
+### Exact Output
+# deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-output-static.ts <tokenIn> <tokenOut> <amountOut> <poolFee> <slippage> <providerURL> <privateKeyTestWallet>
+deno run --allow-net --allow-read --allow-write --allow-env https://deno.land/x/freedomswaps/usage-example-exact-output-static.ts 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 0x099471B71c9D8b0C6b616eE9A7C645e22cA9cfF7 1000000000000000000 10000 9 https://polygon-mainnet.g.alchemy.com/v2/... <your experimental pk>
 
 
 ## About us
