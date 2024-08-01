@@ -35,27 +35,27 @@ contract LightSpeedSwaps {
         swapRouter = ISwapRouter(SWAP_ROUTER);
     }
 
-    function swapExactOutputSingle(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage) external returns (uint256 amountIn) {
+    function swapExactOutputSingle(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage, address recipient) external returns (uint256 amountIn) {
         uint256 amountInMaximum = getAmountInMaximum(amountOut, getPrice(tokenIn, tokenOut, poolFee), slippage);
         safeTransferWithApprove(tokenIn, amountInMaximum, address(swapRouter));
         amountIn = swapRouter.exactOutputSingle(ISwapRouter.ExactOutputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: msg.sender,
+                recipient: recipient,
                 deadline: block.timestamp,
                 amountOut: amountOut,
                 amountInMaximum: amountInMaximum,
                 sqrtPriceLimitX96: 0
             }));
     }
-    function swapBaseCurrencyExactOut(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage) public payable returns (uint256 amountIn) {
+    function swapBaseCurrencyExactOut(address tokenIn, address tokenOut, uint256 amountOut, uint24 poolFee, uint24 slippage, address recipient) external payable returns (uint256 amountIn) {
         ISwapRouter.ExactOutputSingleParams memory params = 
             ISwapRouter.ExactOutputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: msg.sender,
+                recipient: recipient,
                 deadline: block.timestamp,
                 amountOut: amountOut,
                 amountInMaximum: getAmountInMaximum(amountOut, getPrice(tokenIn, tokenOut, poolFee), slippage),
@@ -63,26 +63,26 @@ contract LightSpeedSwaps {
             });
         amountIn = swapRouter.exactOutputSingle{value: msg.value}(params);
     }    
-    function swapExactInputSingle(address tokenIn, address tokenOut, uint256 amountIn, uint24 poolFee, uint24 slippage) external returns (uint256 amountOut) {
+    function swapExactInputSingle(address tokenIn, address tokenOut, uint256 amountIn, uint24 poolFee, uint24 slippage, address recipient) external returns (uint256 amountOut) {
         safeTransferWithApprove(tokenIn, amountIn, address(swapRouter));
         amountOut = swapRouter.exactInputSingle(ISwapRouter.ExactInputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: msg.sender,
+                recipient: recipient,
                 deadline: block.timestamp,
                 amountIn: amountIn,
                 amountOutMinimum: getAmountOutMin(amountIn, getPrice(tokenIn, tokenOut, poolFee), slippage),
                 sqrtPriceLimitX96: 0
             }));
     }
-    function swapBaseCurrency(address tokenIn, address tokenOut, uint24 poolFee, uint24 slippage) public payable returns (uint256 amountOut) {
+    function swapBaseCurrency(address tokenIn, address tokenOut, uint24 poolFee, uint24 slippage, address recipient) external payable returns (uint256 amountOut) {
         ISwapRouter.ExactInputSingleParams memory params = 
             ISwapRouter.ExactInputSingleParams({
                 tokenIn: tokenIn,
                 tokenOut: tokenOut,
                 fee: poolFee,
-                recipient: msg.sender,
+                recipient: recipient,
                 deadline: block.timestamp,
                 amountIn: msg.value,
                 amountOutMinimum: getAmountOutMin(msg.value, getPrice(tokenIn, tokenOut, poolFee), slippage),

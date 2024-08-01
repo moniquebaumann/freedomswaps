@@ -63,20 +63,20 @@ export class FreedomSwaps {
         const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider, pkTestWallet)
         const decimals = Number(await erc20Contract.decimals())
         const freedomSwapsContract = await getContract(LightSpeedSwapsCA, lightSpeedSwapsABI, this.provider, pkTestWallet)
+        const recipient = getAddressFromPK(pkTestWallet, this.provider)
         if (tokenIn === Matic) {
             this.logger.info(`swapping ${amountIn} of BaseCurrency ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, { value: amountIn })
+            tx = await freedomSwapsContract.swapBaseCurrency(tokenIn, tokenOut, poolFee, slippage, recipient, { value: amountIn })
         } else {
-            const address = getAddressFromPK(pkTestWallet, this.provider)
-            const allowance = await erc20Contract.allowance(address, LightSpeedSwapsCA)
-            this.logger.info(`the allowance from ${address} for ${LightSpeedSwapsCA} is: ${allowance}`)
+            const allowance = await erc20Contract.allowance(recipient, LightSpeedSwapsCA)
+            this.logger.info(`the allowance from ${recipient} for ${LightSpeedSwapsCA} is: ${allowance}`)
             if (allowance < amountIn) {
                 tx = await erc20Contract.approve(LightSpeedSwapsCA, BigInt(360) * amountIn)
                 this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
                 await tx.wait()
             }
             this.logger.info(`swapping ${amountIn} of ${tokenIn} to ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, amountIn, poolFee, slippage)
+            tx = await freedomSwapsContract.swapExactInputSingle(tokenIn, tokenOut, amountIn, poolFee, slippage, recipient)
         }
         this.logger.info(`swap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()
@@ -88,20 +88,20 @@ export class FreedomSwaps {
         const decimals = Number(await erc20Contract.decimals())
         const freedomSwapsContract = await getContract(LightSpeedSwapsCA, lightSpeedSwapsABI, this.provider, pkTestWallet)
         const amountInMaximum = await freedomSwapsContract.getAmountInMaximum(amountOut, await freedomSwapsContract.getPrice(tokenIn, tokenOut, poolFee), slippage)
+        const recipient = getAddressFromPK(pkTestWallet, this.provider)
         if (tokenIn === Matic) {
             this.logger.info(`bying ${amountOut} ${tokenOut} - amountInMaximum: ${amountInMaximum} poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapBaseCurrencyExactOut(tokenIn, tokenOut, amountOut, poolFee, slippage, { value: amountInMaximum })
+            tx = await freedomSwapsContract.swapBaseCurrencyExactOut(tokenIn, tokenOut, amountOut, poolFee, slippage, recipient, { value: amountInMaximum })
         } else {
-            const address = getAddressFromPK(pkTestWallet, this.provider)
-            const allowance = await erc20Contract.allowance(address, LightSpeedSwapsCA)
-            this.logger.info(`the allowance from ${address} for ${LightSpeedSwapsCA} is: ${allowance}`)
+            const allowance = await erc20Contract.allowance(recipient, LightSpeedSwapsCA)
+            this.logger.info(`the allowance from ${recipient} for ${LightSpeedSwapsCA} is: ${allowance}`)
             if (allowance < amountInMaximum) {
                 tx = await erc20Contract.approve(LightSpeedSwapsCA, BigInt(360) * amountInMaximum)
                 this.logger.info(`approval tx: https://polygonscan.com/tx/${tx.hash}`)
                 await tx.wait()
             }
             this.logger.info(`swapping a maximum of ${amountInMaximum} ${tokenIn} to ${amountOut} ${tokenOut} - poolFee: ${poolFee} slippage: ${slippage}`)
-            tx = await freedomSwapsContract.swapExactOutputSingle(tokenIn, tokenOut, amountOut, poolFee, slippage)
+            tx = await freedomSwapsContract.swapExactOutputSingle(tokenIn, tokenOut, amountOut, poolFee, slippage, recipient)
         }
         this.logger.info(`swap tx: https://polygonscan.com/tx/${tx.hash}`)
         await tx.wait()

@@ -6,7 +6,7 @@ export const Friede = "0x0715184614CA1e90EafDf7A4d7fE33B046b47C02"
 export const Matic = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
 export const Spass = "0x33b5624f20b41e2bc6d71fd039e3bd05524c1d82"
 export const WETH = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
-export const LightSpeedSwapsCA = "0xf97F48B7b985F2389Aa2540B53757Ee0A92886B7"
+export const LightSpeedSwapsCA = "0xc12Fb190F57aa7E3621e7CD48d890307c2a1D994"
 
 let loggerInstance: Logger
 

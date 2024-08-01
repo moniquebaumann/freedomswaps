@@ -262,6 +262,11 @@ export const lightSpeedSwapsABI = [
 				"internalType": "uint24",
 				"name": "slippage",
 				"type": "uint24"
+			},
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
 			}
 		],
 		"name": "swapBaseCurrency",
@@ -301,6 +306,11 @@ export const lightSpeedSwapsABI = [
 				"internalType": "uint24",
 				"name": "slippage",
 				"type": "uint24"
+			},
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
 			}
 		],
 		"name": "swapBaseCurrencyExactOut",
@@ -340,6 +350,11 @@ export const lightSpeedSwapsABI = [
 				"internalType": "uint24",
 				"name": "slippage",
 				"type": "uint24"
+			},
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
 			}
 		],
 		"name": "swapExactInputSingle",
@@ -379,6 +394,11 @@ export const lightSpeedSwapsABI = [
 				"internalType": "uint24",
 				"name": "slippage",
 				"type": "uint24"
+			},
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
 			}
 		],
 		"name": "swapExactOutputSingle",
