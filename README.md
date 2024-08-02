@@ -1,6 +1,6 @@
 # Freedomswaps
 
-🦕 module to simplify uniswap interactions by leveraging smart contracts like [LightSpeedSwaps](https://polygonscan.com/address/0xf97F48B7b985F2389Aa2540B53757Ee0A92886B7) fostering the adoption of decentralized exchanges.  
+🦕 module to simplify uniswap interactions by leveraging smart contracts like [LightSpeedSwaps](https://polygonscan.com/address/0xc12Fb190F57aa7E3621e7CD48d890307c2a1D994) fostering the adoption of decentralized exchanges.  
 
 Thanks to [brightinventions.pl](https://brightinventions.pl/blog/single-swap-on-uniswap-v3-with-3-common-mistakes).  
 
