@@ -1,5 +1,4 @@
-// import { FreedomSwaps } from "https://deno.land/x/freedomswaps/mod.ts"
-import { FreedomSwaps } from "./mod.ts"
+import { FreedomSwaps } from "https://deno.land/x/freedomswaps/mod.ts"
 
 const tokenIn = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" // Matic on Polygon POS
 const tokenOut = "0xb841a4f979f9510760ecf60512e038656e68f459" // Geld on Polygon POS
@@ -16,4 +15,3 @@ if (providerURL === undefined || pkTestWallet === undefined) {
 const freedomSwaps = await FreedomSwaps.getInstance(providerURL)
 
 await freedomSwaps.swapExactOutput(tokenIn, tokenOut, amountOut, poolFee, slippage, pkTestWallet)
-

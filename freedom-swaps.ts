@@ -61,7 +61,6 @@ export class FreedomSwaps {
     public async swap(tokenIn: string, tokenOut: string, amountIn: bigint, poolFee: number, slippage: number, pkTestWallet: string) {
         let tx
         const erc20Contract = await getContract(tokenIn, freiheitsABI, this.provider, pkTestWallet)
-        const decimals = Number(await erc20Contract.decimals())
         const freedomSwapsContract = await getContract(LightSpeedSwapsCA, lightSpeedSwapsABI, this.provider, pkTestWallet)
         const recipient = getAddressFromPK(pkTestWallet, this.provider)
         if (tokenIn === Matic) {
